@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,16 @@ class ProfileController extends Controller
         return view('profile.edit', [
             'user' => $request->user(),
         ]);
+    }
+
+    /**
+     * Display the users's profile list.
+     */
+    public function index(): View
+    {
+        $users = User::all();
+
+        return view('dashboard', ['users' => $users]);
     }
 
     /**
@@ -56,5 +67,16 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Delete the other user's account (only devs can use this).
+     */
+    public function destroyOtherUser(int $id): View
+    {
+        $user = User::find($id);
+        $user->delete();
+
+        return $this->index();
     }
 }
