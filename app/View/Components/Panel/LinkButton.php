@@ -1,19 +1,21 @@
 <?php
 
-namespace App\View\Components\painel;
+namespace App\View\Components\Panel;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Home extends Component
+class LinkButton extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(
+        public string $linkTo
+    )
     {
-        //
+        $this->linkTo = 'panel.'.$linkTo;
     }
 
     /**
@@ -21,6 +23,6 @@ class Home extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.painel.home');
+        return view('components.panel.link-button');
     }
 }

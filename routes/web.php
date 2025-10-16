@@ -16,6 +16,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware('auth')->group(function() {
+    Route::get('panel/albums', function(){echo 'albums';})->name('panel.albums');
+    Route::get('panel/highlights', function(){echo 'highlights';})->name('panel.highlights');
+    Route::get('panel/carousel', function(){echo 'carousel';})->name('panel.carousel');
+    Route::get('panel/events', function(){echo 'events';})->name('panel.events');
+});
+
 
 
 require __DIR__.'/auth.php';

@@ -35,12 +35,12 @@
                         </div>
                     @endif
                 </div>
-                <div class="p-6 text-gray-900">
+                <div>
                     {{ __("Edição de Conteúdo") }}
                 </div>
                 
                 <div>
-                    <x-painel.home/>
+                    <x-panel.home/>
                 </div>
                     
                 </div>
