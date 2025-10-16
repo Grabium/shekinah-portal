@@ -14,21 +14,21 @@
                             {{ __("Listagem de Usuários Editores") }} <hr /><br /><br /><br />
 
                             @foreach($users as $user)
-                                {{ $user->id }} <br />
-                                {{ $user->name }} <br />
-                                {{ $user->email }} <br />
+                                <label>ID: {{ $user->id }}   </label> <br />
+                                <label>name: {{ $user->name }} </label> <br />
+                                <label>EMAIL: {{ $user->email }}</label> <br />
                                 <form method="POST" action="{{ route('destroyOtherUser', $user->id) }}" style="display:inline;">
-            {{-- Token de segurança obrigatório no Laravel --}}
-            @csrf
-            
-            {{-- Diretiva para simular o método HTTP DELETE --}}
-            @method('delete')
-            
-            {{-- O botão de exclusão agora submete este formulário --}}
-            <x-danger-button class="ms-3">
-                {{ __('Delete Account') }}
-            </x-danger-button>
-        </form>
+                                    {{-- Token de segurança obrigatório no Laravel --}}
+                                    @csrf
+                                    
+                                    {{-- Diretiva para simular o método HTTP DELETE --}}
+                                    @method('delete')
+                                    
+                                    {{-- O botão de exclusão agora submete este formulário --}}
+                                    <x-danger-button class="ms-3">
+                                        {{ __('Delete Account') }}
+                                    </x-danger-button>
+                                </form>
                                 <hr /><br />
                             @endforeach
                             
@@ -39,6 +39,9 @@
                     {{ __("Edição de Conteúdo") }}
                 </div>
                 
+                <div>
+                    <x-painel.home/>
+                </div>
                     
                 </div>
             </div>
