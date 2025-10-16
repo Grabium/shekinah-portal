@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Panel\CaroselPanelController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,10 +18,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function() {
-    Route::get('panel/albums', function(){echo 'albums';})->name('panel.albums');
+    Route::get('panel/albums', )->name('panel.albums');
     Route::get('panel/highlights', function(){echo 'highlights';})->name('panel.highlights');
-    Route::get('panel/carousel', function(){echo 'carousel';})->name('panel.carousel');
     Route::get('panel/events', function(){echo 'events';})->name('panel.events');
+});
+
+
+Route::middleware('auth')->group(function() {
+    Route::get('panel/carousel', [CaroselPanelController::class, 'index'])->name('panel.carousel');
 });
 
 

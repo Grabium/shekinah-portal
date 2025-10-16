@@ -29,6 +29,14 @@ return [
     */
 
     'disks' => [
+        'photos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/photos'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => true,
+            'report' => false,
+        ],
 
         'local' => [
             'driver' => 'local',
