@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+use function PHPUnit\Framework\matches;
+
 class CaroselPanelController extends Controller
 {
     /**
@@ -18,6 +20,8 @@ class CaroselPanelController extends Controller
         $photosLinks = [];
 
         foreach($partialLinks as $partialLink){
+            $matches = preg_match('/(([0][1-9])|([1][12]))\.*/', $partialLink);
+            dd($matches);//tenta capturar nomes finais do arquivo
             $photosLinks[] = 'storage/photos/'. $partialLink;
         }
         
