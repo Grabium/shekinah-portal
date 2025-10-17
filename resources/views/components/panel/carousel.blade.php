@@ -3,7 +3,7 @@
     
     @foreach ($photosLinks as $link)
         {{$link}}<br>
-        <img src="{{Storage::url($link)}}" ><br>
+        <img src="{{asset($link)}}" ><br>
     @endforeach
     
 </div>

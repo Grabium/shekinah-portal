@@ -13,16 +13,18 @@ class CaroselPanelController extends Controller
      */
     public function index()
     {
-        $paths_relativos_ao_disk = Storage::disk('photos')->files('carousel');
-        $urls = [];
+        $partialLinks = Storage::disk('photos')->files('carousel/');
 
-        foreach($paths_relativos_ao_disk as $path_relativo_ao_disk){
-            $urls[] = Storage::disk('photos')->url($path_relativo_ao_disk);
+        $photosLinks = [];
+
+        foreach($partialLinks as $partialLink){
+            $photosLinks[] = 'storage/photos/'. $partialLink;
         }
-
         
-        return view('components.panel.carousel', ['photosLinks' => $urls]);
+        return view('components.panel.carousel', ['photosLinks' => $photosLinks]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.
