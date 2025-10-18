@@ -5,27 +5,34 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
-use function PHPUnit\Framework\matches;
+use Illuminate\Contracts\Filesystem\Filesystem;
+//use function PHPUnit\Framework\matches;
 
 class CaroselPanelController extends Controller
 {
+    private Filesystem $disk;
+
+    public function __construct()
+    {
+        $this->disk = Storage::disk('carousel');
+    }
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $partialLinks = Storage::disk('photos')->files('carousel/');
+        $carouselNames = $this->disk->files();
+        $enabledToAdd = (count($carouselNames) < 12);
+        //dd($enabledToAdd);
 
         $photosLinks = [];
-
-        foreach($partialLinks as $partialLink){
-            $matches = preg_match('/(([0][1-9])|([1][12]))\.*/', $partialLink);
-            dd($matches);//tenta capturar nomes finais do arquivo
-            $photosLinks[] = 'storage/photos/'. $partialLink;
+        foreach($carouselNames as $name){
+            $photosLinks[] = ['link' => 'linkToCarousel/'. $name, 'name' => $name];
         }
         
-        return view('components.panel.carousel', ['photosLinks' => $photosLinks]);
+        return view('components.panel.carousel', ['photosLinks' => $photosLinks, 'enabledToAdd' => $enabledToAdd]);
     }
 
 

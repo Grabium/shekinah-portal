@@ -29,9 +29,9 @@ return [
     */
 
     'disks' => [
-        'photos' => [
+        'carousel' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/photos'),
+            'root' => storage_path('app/public/photos/carousel'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => true,
@@ -82,7 +82,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('linkToCarousel') => storage_path('app/public/photos/carousel'),
     ],
 
 ];
