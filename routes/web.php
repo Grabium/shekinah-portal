@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function() {
 
 
 Route::middleware('auth')->group(function() {
-    Route::get('panel/carousel', [CaroselPanelController::class, 'index'])->name('panel.carousel');
+    Route::resource('panel/carousel', CaroselPanelController::class);
 });
 
 

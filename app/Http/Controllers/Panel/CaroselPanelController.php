@@ -25,7 +25,6 @@ class CaroselPanelController extends Controller
     {
         $carouselNames = $this->disk->files();
         $enabledToAdd = (count($carouselNames) < 12);
-        //dd($enabledToAdd);
 
         $photosLinks = [];
         foreach($carouselNames as $name){
@@ -50,7 +49,7 @@ class CaroselPanelController extends Controller
      */
     public function store(Request $request)
     {
-        if(count(Storage::drive('photos')->files('carousel/')) >= 12){
+        if(count($this->disk->files()) >= 12){
             return 'Quantidade máxima atingida';
         }
     }
