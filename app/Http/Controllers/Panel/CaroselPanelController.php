@@ -81,8 +81,51 @@ class CaroselPanelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    /*public function destroy(string $name)
     {
-        //
+        $existsBefore = $this->disk->exists($name);
+        if(!$existsBefore){
+            return; //imagem não existe!
+        }
+        $this->disk->delete($name);
+        $existsAfter = $this->disk->exists($name);
+
+        $wasDeleted = (($existsBefore) && (!$existsAfter));
+        $msg = $wasDeleted ? "Imagem {$name} " : "Imagem {$name} NÃO ";
+        $msg .= "foi deletada do carrossel.";
+
+        if(!$wasDeleted){
+            return; //completar considerando o livewire.
+        }
+
+        $carouselNames = $this->disk->files();
+
+        $filesToRename = [];
+        foreach($carouselNames as $name){
+            //vefiricar se o numero é maior que o contido no name com regex
+            //Se sim, salvar num array
+        }
+
+        //Executar a operação de renomear/mover (Ex: '03.jpg' -> '02.jpg') iterando o array 
+        foreach ($filesToRename as $oldPath) {
+        //$this->disk->move($oldPath, $newPath); 
+        }
+    }*/
+
+    public function destroy(string $fullName){
+        
+        if(!preg_match("/^(([0][1-9])|([1][0-2]))/", $fullName, $match)){
+            dd('Não validado');
+        }
+        $name = $match[0];
+
+        $existsBefore = $this->disk->exists($fullName);
+        if(!$existsBefore){
+            dd('imagem não existe!');
+        }
+        $this->disk->delete($fullName);
+
+        return $this->index();
+
     }
 }

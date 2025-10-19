@@ -14,24 +14,30 @@
 
     {{-- Itera sobre os links das imagens, adicionando a classe 'slide' --}}
     <div style="background-color:aquamarine">
+        
         @foreach ($photosLinks as $photo)
-            @php
-                $bgColor = (($loop->index%2) == 0) ? 'gray' : 'lightgray';
-            @endphp
-            
-            <div style="background-color:{{$bgColor}};">
-                <img src="{{ asset($photo['link']) }}" width="200" height="200" alt="Imagem do Carrossel {{ $photo['name'] }}">
-            
-                @if(!$loop->first)
-                    <button>Subir</button>
-                @endif
 
-                @if(!$loop->last)
-                    <button>Descer</button>
-                @endif
+            <form action="{{ route('carousel.destroy', $photo['name']) }}" method="post">
+                @csrf
+                @method('DELETE')
+                @php
+                    $bgColor = (($loop->index%2) == 0) ? 'gray' : 'lightgray';
+                @endphp
                 
-                <button type="button">Excluir</button>
-            </div>
+                <div style="background-color:{{$bgColor}};">
+                    <img src="{{ asset($photo['link']) }}" width="200" height="200" alt="Imagem do Carrossel {{ $photo['name'] }}">
+                
+                    @if(!$loop->first)
+                        <button>Subir</button>
+                    @endif
+
+                    @if(!$loop->last)
+                        <button>Descer</button>
+                    @endif
+                    
+                    <button type="submit">Excluir</button>
+                </div>
+            </form>
         @endforeach
     </div>
 
