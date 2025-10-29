@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Panel\CaroselPanelController;
+use App\Http\Controllers\Panel\Carousel\CarouselPanelController;
+use App\Http\Controllers\Panel\Carousel\CarouselDownload;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,9 @@ Route::middleware('auth')->group(function() {
 
 
 Route::middleware('auth')->group(function() {
-    Route::resource('panel/carousel', CaroselPanelController::class);
+    Route::resource('panel/carousel', CarouselPanelController::class);
+    Route::get('panel/carousel/download/{photoName}', [CarouselDownload::class, 'download'])->name('panel.carousel.download');
+    
 });
 
 

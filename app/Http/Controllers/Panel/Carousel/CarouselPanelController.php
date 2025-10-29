@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Panel;
+namespace App\Http\Controllers\Panel\Carousel;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\Filesystem;
 //use function PHPUnit\Framework\matches;
 
-class CaroselPanelController extends Controller
+class CarouselPanelController extends Controller
 {
-    private Filesystem $disk;
+    protected Filesystem $disk;
 
     public function __construct()
     {
@@ -27,10 +27,10 @@ class CaroselPanelController extends Controller
         $enabledToAdd = (count($carouselNames) < 12);
 
         $photosLinks = [];
-        foreach($carouselNames as $name){
-            $photosLinks[] = ['link' => 'linkToCarousel/'. $name, 'name' => $name];
+        foreach ($carouselNames as $name) {
+            $photosLinks[] = ['link' => 'linkToCarousel/' . $name, 'name' => $name];
         }
-        
+
         return view('components.panel.carousel', ['photosLinks' => $photosLinks, 'enabledToAdd' => $enabledToAdd]);
     }
 
@@ -49,9 +49,12 @@ class CaroselPanelController extends Controller
      */
     public function store(Request $request)
     {
-        if(count($this->disk->files()) >= 12){
+        /*if(count($this->disk->files()) >= 12){
             return 'Quantidade máxima atingida';
-        }
+        }*/
+        
+        dd($this->disk->put('/', $request->file('carouselAdd')));
+            
     }
 
     /**
@@ -81,51 +84,20 @@ class CaroselPanelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    /*public function destroy(string $name)
+    public function destroy(string $fullName)
     {
-        $existsBefore = $this->disk->exists($name);
-        if(!$existsBefore){
-            return; //imagem não existe!
-        }
-        $this->disk->delete($name);
-        $existsAfter = $this->disk->exists($name);
 
-        $wasDeleted = (($existsBefore) && (!$existsAfter));
-        $msg = $wasDeleted ? "Imagem {$name} " : "Imagem {$name} NÃO ";
-        $msg .= "foi deletada do carrossel.";
-
-        if(!$wasDeleted){
-            return; //completar considerando o livewire.
-        }
-
-        $carouselNames = $this->disk->files();
-
-        $filesToRename = [];
-        foreach($carouselNames as $name){
-            //vefiricar se o numero é maior que o contido no name com regex
-            //Se sim, salvar num array
-        }
-
-        //Executar a operação de renomear/mover (Ex: '03.jpg' -> '02.jpg') iterando o array 
-        foreach ($filesToRename as $oldPath) {
-        //$this->disk->move($oldPath, $newPath); 
-        }
-    }*/
-
-    public function destroy(string $fullName){
-        
-        if(!preg_match("/^(([0][1-9])|([1][0-2]))/", $fullName, $match)){
+        if (!preg_match("/^(([0][1-9])|([1][0-2]))/", $fullName, $match)) {
             dd('Não validado');
         }
         $name = $match[0];
 
         $existsBefore = $this->disk->exists($fullName);
-        if(!$existsBefore){
+        if (!$existsBefore) {
             dd('imagem não existe!');
         }
         $this->disk->delete($fullName);
 
         return $this->index();
-
     }
 }
