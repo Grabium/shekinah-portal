@@ -1,5 +1,4 @@
-
-<div >
+<div>
 
     @if($enabledToAdd)
         <div style="background-color:bisque">

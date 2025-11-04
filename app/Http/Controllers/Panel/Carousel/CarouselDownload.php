@@ -11,11 +11,12 @@ class CarouselDownload extends CarouselPanelController
         
     public function download(string $photoName)
     {
+        //dd($this->disk, $photoName, $this->disk->exists($photoName), Storage::disk('carousel')->download($photoName));
         if(!$this->disk->exists($photoName)){
             echo 'get - '.$photoName. ' - NÃO EXISTE';
         }
         
-        return Storage::download($photoName);
+        return $this->disk->download($photoName);
     }
 
 }

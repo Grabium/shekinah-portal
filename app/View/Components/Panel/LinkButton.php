@@ -15,7 +15,7 @@ class LinkButton extends Component
         public string $linkTo
     )
     {
-        $this->linkTo = 'panel.'.$linkTo;
+        //$this->linkTo = 'panel.'.$linkTo;
     }
 
     /**
