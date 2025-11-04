@@ -49,11 +49,17 @@ class CarouselPanelController extends Controller
      */
     public function store(Request $request)
     {
-        /*if(count($this->disk->files()) >= 12){
-            return 'Quantidade máxima atingida';
-        }*/
-        
-        dd($this->disk->put('/', $request->file('carouselAdd')));
+        $carouselNames = $this->disk->files();
+        $countCarousels = count($carouselNames);
+
+        if(count($carouselNames) >= 12){
+            return 'Atingida a quantidade máxima';
+        }
+
+        $nameNewCarousel = ($countCarousels+1).'jpeg';
+        $photoAddedName = $this->disk->putFileAs('/',$request->file('carouselAdd'), $nameNewCarousel);
+
+        return $this->index();
             
     }
 
@@ -97,6 +103,8 @@ class CarouselPanelController extends Controller
             dd('imagem não existe!');
         }
         $this->disk->delete($fullName);
+
+        //reordenar os nomes das fotos que restaram aqui.
 
         return $this->index();
     }
