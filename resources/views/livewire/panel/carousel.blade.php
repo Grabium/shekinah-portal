@@ -1,8 +1,7 @@
 <div>
-
     @if($enabledToAdd)
         <div style="background-color:bisque">
-            <form action="{{ route('carousel.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('panel.carousel.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <label for="adicionar">Adicionar Foto ao Carrossel</label>
                 <input type="file" name="carouselAdd">
@@ -19,32 +18,30 @@
         
         @foreach ($photosLinks as $photo)
 
-            <form action="{{ route('carousel.destroy', $photo['name']) }}" method="post">
+        {{$photo['name']}}
+            <form action="{{ route('panel.carousel.delete', $photo['name']) }}" method="post">
                 @csrf
                 @method('DELETE')
                 @php
                     $bgColor = (($loop->index%2) == 0) ? 'gray' : 'lightgray';
                 @endphp
                 
-                <div style="background-color:{{$bgColor}};">
+                <div wire:key="{{$photo['name']}}" style="background-color:{{$bgColor}};">
                     <img src="{{ asset($photo['link']) }}" width="200" height="200" alt="Imagem do Carrossel {{ $photo['name'] }}">
                     <input type="hidden" value="{{ $photo['name'] }}" name="photoName">
                 
                     @if(!$loop->first)
-                        <button>Subir</button>
+                        <button type="button" wire:click="move('{{ $photo['name'] }}','DECREMENT')">Subir</button>
                     @endif
 
                     @if(!$loop->last)
-                        <button>Descer</button>
+                        <button type="button" wire:click="move('{{ $photo['name'] }}','INCREMENT')">Descer</button>
                     @endif
                     
                     <button type="submit">Excluir</button>
-                    {{--<button type="button" formaction="{{ route('panel.carousel.download') }}" formmethod="POST">Download</button>--}}
-                    <a href="{{ route('panel.carousel.download', [ 'photoName' => $photo['name']]) }}"><button type="button">Download</button></a>
+                    <button type="button" wire:click="download('{{ $photo['name'] }}')">Download</button>
                 </div>
             </form>
         @endforeach
     </div>
-
-</div>    
-    
+</div>

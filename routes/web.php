@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Panel\Carousel\CarouselPanelController;
-use App\Http\Controllers\Panel\Carousel\CarouselDownload;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Panel\Carousel;
+use App\Livewire\Panel\Home;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,8 +26,11 @@ Route::middleware('auth')->group(function() {
 
 
 Route::middleware('auth')->group(function() {
-    Route::resource('panel/carousel', CarouselPanelController::class);
-    Route::get('panel/carousel/download/{photoName}', [CarouselDownload::class, 'download'])->name('panel.carousel.download');
+    Route::get('panel/carousel/index', Carousel::class)->name('panel.carousel.index');
+    Route::post('panel/carousel/store', [Carousel::class, 'store'])->name('panel.carousel.store');
+    Route::delete('panel/carousel/delete/{photoName}', [Carousel::class, 'delete'])->name('panel.carousel.delete');
+    Route::get('panel/carousel/download/{photoName}', [Carousel::class, 'download'])->name('panel.carousel.download');
+
     
 });
 

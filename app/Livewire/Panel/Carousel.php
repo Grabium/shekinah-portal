@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Panel\Carousel;
+namespace App\Livewire\Panel;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\Filesystem;
-//use function PHPUnit\Framework\matches;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Illuminate\Http\Request;
 
-class CarouselPanelController extends Controller
+
+class Carousel extends Component
 {
     protected Filesystem $disk;
 
@@ -17,11 +17,7 @@ class CarouselPanelController extends Controller
         $this->disk = Storage::disk('carousel');
     }
 
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function render()
     {
         $carouselNames = $this->disk->files();
         $enabledToAdd = (count($carouselNames) < 12);
@@ -30,23 +26,10 @@ class CarouselPanelController extends Controller
         foreach ($carouselNames as $name) {
             $photosLinks[] = ['link' => 'linkToCarousel/' . $name, 'name' => $name];
         }
-
-        return view('components.panel.carousel', ['photosLinks' => $photosLinks, 'enabledToAdd' => $enabledToAdd]);
+        
+        return view('livewire.panel.carousel', ['photosLinks' => $photosLinks, 'enabledToAdd' => $enabledToAdd]);
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $carouselNames = $this->disk->files();
@@ -56,43 +39,15 @@ class CarouselPanelController extends Controller
             return 'Atingida a quantidade máxima';
         }
 
-        $nameNewCarousel = ($countCarousels+1).'jpeg';
+        $nameNewCarousel = ($countCarousels+1).'.jpeg';
         $photoAddedName = $this->disk->putFileAs('/',$request->file('carouselAdd'), $nameNewCarousel);
 
-        return $this->index();
+        return $this->render();
             
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function delete(string $fullName)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $fullName)
-    {
-
         if (!preg_match("/^(([0][1-9])|([1][0-2]))/", $fullName, $match)) {
             dd('Não validado');
         } 
@@ -120,6 +75,33 @@ class CarouselPanelController extends Controller
             }
         }
 
-        return $this->index();
+        return $this->render();
+    }
+
+    public function download(string $photoName)
+    {
+        if(!$this->disk->exists($photoName)){
+            echo 'get - '.$photoName. ' - NÃO EXISTE';
+        }
+        
+        return $this->disk->download($photoName);//Há um problema com a extenssão INTELEPHENSE aqui. Ignore esse bug.
+    }
+
+    public function move(string $photoName, string $sense)
+    {
+        preg_match("/^((0[1-9])|(1[0-2]))/", $photoName, $match);
+        $photoId = (int)$match[0];
+
+        $newName = ($sense == 'INCREMENT') ? ($photoId+1) : ($photoId-1) ;
+        $newName = (string)$newName;
+        $newName = (strlen($newName) == 1) ? '0'.$newName : $newName;
+        $newName .= '.jpeg';
+
+        $aux = "aux_file.jpeg";
+        $this->disk->move($newName, $aux);
+        $this->disk->move($photoName, $newName);
+        $this->disk->move($aux, $photoName);
+
+        to_route('panel.carousel.index');
     }
 }

@@ -40,7 +40,7 @@
                 </div>
                 
                 <div>
-                    <x-panel.home/>
+                    <livewire:panel.home/>
                 </div>
                     
                 </div>
