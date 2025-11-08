@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Livewire\Panel\Carousel;
 use App\Livewire\Panel\Home;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Teste\Teste;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function() {
 
     
 });
+
+Route::get('/lw/teste', Teste::class)->name('lw.teste');
 
 
 
