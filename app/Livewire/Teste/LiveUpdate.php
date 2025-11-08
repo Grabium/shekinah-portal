@@ -5,7 +5,7 @@ namespace App\Livewire\Teste;
 use Livewire\Component;
 use Faker\Factory;
 
-class Teste extends Component
+class LiveUpdate extends Component
 {
     public array $dataExemple = [];
     public string $filter;
@@ -15,7 +15,7 @@ class Teste extends Component
     {
         $this->dataBaseExemple();
         $this->filter();
-        return view('livewire.teste.teste');
+        return view('livewire.teste.live-update');
     }
 
     private function dataBaseExemple()
