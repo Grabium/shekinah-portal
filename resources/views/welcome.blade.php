@@ -51,6 +51,8 @@
         </header>
         
         <div>Conteúdo do Site</div>
+
+        <a href="{{route('treinaweb.home')}}"><button type="button">Testes</button></a>
         
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
