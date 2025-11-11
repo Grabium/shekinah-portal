@@ -11,6 +11,9 @@
             <li>
                 <a href="{{route('treinaweb.validations')}}">Validations</a>
             </li>
+            <li>
+                <a href="{{route('fake.homelist')}}">CRUD do FAKE</a>
+            </li>
         </ul>
     </aside>
 </div>
