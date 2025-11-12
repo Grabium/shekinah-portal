@@ -1,9 +1,26 @@
-<div>
-    <head>
-        <h1>Lista de Registros</h1>
-        <p>Gerenciado por LIVEWIRE/TESTE/CRUD/FAKE</p>
+<div class="d-flex justify-content-center bg-light">
+    <div class="alert-secondary">
+        <head>
+            <div class="row">
+                <div class="col d-flex justify-content-center">
+                    <h1>Lista de Registros</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col d-flex justify-content-center">
+                    <p>Gerenciado por LIVEWIRE/TESTE/CRUD/FAKE</p>
+                </div>
+            </div>
         <nav>
-            <a href="{{route('fake.create')}}">Criar</a>
+            <div class="row d-flex justify-content-center">
+                <div class="col-6 col-md-2 d-flex justify-content-center">
+                    <a class="btn btn-outline-secondary" href="{{route('treinaweb.home')}}">Voltar</a>
+                </div>
+                
+                <div class="col-6 col-md-2 d-flex justify-content-center">
+                    <a class="btn btn-outline-secondary" href="{{route('fake.create')}}">Criar</a>
+                </div>    
+            </div>
         </nav>
     </head><hr>
 
@@ -31,12 +48,13 @@
                     <tr>
                         <td>{{$fake->name}}</td>
                         <td>{{$fake->description}}</td>
-                        <td><button type="button" wire:click="toEdit({{$fake->id}})">Editar</button></td>
+                        <td><button class="btn-sm btn-secondary" type="button" wire:click="toEdit({{$fake->id}})">Editar</button></td>
                     </tr>
                    
                 @endforeach
             </tbody>
             
         </table>
+    </div>
     </div>
 </div>

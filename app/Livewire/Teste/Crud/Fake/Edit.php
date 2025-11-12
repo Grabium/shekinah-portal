@@ -9,7 +9,7 @@ use Livewire\Component;
 class Edit extends Component
 {
     public FormsFake $form;//acessado no front-end com: <input wire:model="form.name" .../>
-    public Fake $fake;
+    public Fake $fake;//recebido pela rota "/treinaweb/fake/{fake}/edit"
 
     public function render()
     {

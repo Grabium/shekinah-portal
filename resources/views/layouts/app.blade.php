@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!-- Layout carregado para qualquer componente Blade do Brezee -->
+
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
