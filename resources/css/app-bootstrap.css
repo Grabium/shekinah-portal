@@ -1,0 +1,5 @@
+/* Importa o Bootstrap do ./node_modules e todo o seu CSS */
+@import 'bootstrap/dist/css/bootstrap.css'; 
+
+/* Importa suas customizações para que venham DEPOIS do Bootstrap */
+@import 'custom.css';

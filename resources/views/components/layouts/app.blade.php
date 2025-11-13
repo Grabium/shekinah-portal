@@ -6,11 +6,12 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{asset('bootstrap-5.0.2-dist/css/bootstrap.min.css')}}">
         <title>{{ $title ?? 'Page Title Blade' }}</title>
+        <!-- Scripts -->
+        @vite('resources/js/app.js') <!-- carrega o js para o Alpine que é fundamental para o Livewire. -->
+        @vite('resources/css/app-bootstrap.css') 
     </head>
     <body>
         {{ $slot }}
-        <script src="{{asset('bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js')}}"></script>
     </body>
 </html>

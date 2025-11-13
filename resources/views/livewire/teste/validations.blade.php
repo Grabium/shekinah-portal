@@ -20,7 +20,7 @@
             @enderror
         </div>
 
-        <button type="submit">Enviar</button>
+        <button type="submit" class="btn btn-trust">Enviar</button>
     </form>
     <hr>
 

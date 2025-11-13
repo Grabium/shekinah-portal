@@ -1,0 +1,42 @@
+/* --- PALETA DE CORES --- */
+:root {
+  --bs-trust: #558ada;
+  --bs-trust-rgb: 85, 138, 218; 
+  --bs-trust-hover: #4077c5;
+  --bs-trust-active: #3164aa; 
+
+  --bs-raw: #b3bbc7;
+  --bs-raw-rgb: 85, 138, 218; 
+  --bs-raw-hover: #6b7481;
+  --bs-raw-active: #303030; 
+}
+
+/* --- ESTILO DO BOTÃO .btn-trust --- */
+.btn-trust {
+  /* Cor de fundo e borda (Estado Normal) */
+  --bs-btn-color: #fff; 
+  --bs-btn-bg: var(--bs-trust);
+  --bs-btn-border-color: var(--bs-trust-active);
+  
+  /* Estilos HOVER */
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--bs-trust-hover); 
+  --bs-btn-hover-border-color: var(--bs-trust-hover);
+  
+  /* Estilos ACTIVE (clique e foco) */
+  --bs-btn-active-bg: var(--bs-trust-active);
+  --bs-btn-active-border-color: var(--bs-trust-active);
+  
+  /* Estilos DISABLED (Pode-se usar uma versão clara da cor trust) */
+  --bs-btn-disabled-bg: #89b3f0; /* Azul Celeste um pouco mais claro */
+  --bs-btn-disabled-border-color: #89b3f0;
+}
+
+.text-raw {
+  --bs-text-opacity: 1;
+  color: var(--bs-raw-hover) !important;
+}
+
+.border-raw {
+  border-color: var(--bs-raw) !important;
+}

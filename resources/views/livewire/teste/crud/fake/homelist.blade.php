@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center bg-light">
-    <div class="alert-secondary">
+    <div class="bg-light border border-raw border-3 rounded-3 text-raw">
         <head>
             <div class="row">
                 <div class="col d-flex justify-content-center">
@@ -48,7 +48,7 @@
                     <tr>
                         <td>{{$fake->name}}</td>
                         <td>{{$fake->description}}</td>
-                        <td><button class="btn-sm btn-secondary" type="button" wire:click="toEdit({{$fake->id}})">Editar</button></td>
+                        <td><button class="btn btn-sm btn-secondary" type="button" wire:click="toEdit({{$fake->id}})">Editar</button></td>
                     </tr>
                    
                 @endforeach
