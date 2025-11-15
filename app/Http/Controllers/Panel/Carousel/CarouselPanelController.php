@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\Filesystem;
-//use function PHPUnit\Framework\matches;
 
 class CarouselPanelController extends Controller
 {
     protected Filesystem $disk;
+    protected int $limiterMax = 12;
 
     public function __construct()
     {
@@ -24,14 +24,14 @@ class CarouselPanelController extends Controller
     public function index()
     {
         $carouselNames = $this->disk->files();
-        $enabledToAdd = (count($carouselNames) < 12);
+        $enabledToAdd = (count($carouselNames) < $this->limiterMax);
 
         $photosLinks = [];
         foreach ($carouselNames as $name) {
             $photosLinks[] = ['link' => 'linkToCarousel/' . $name, 'name' => $name];
         }
 
-        return view('components.panel.carousel', ['photosLinks' => $photosLinks, 'enabledToAdd' => $enabledToAdd]);
+        return [$photosLinks, $enabledToAdd];//*/
     }
 
 

@@ -1,7 +1,21 @@
 <div>
+
+    <header>
+        <h1>
+            Carrossel
+        </h1>
+        <label>Edite o carrossel do site</label>
+        <p>Além de subir ou excluir fotos, altere a ordem ou baixe fotos</p>
+    </header>
+
+    <nav>
+        <div>
+            <a href="{{route('dashboard')}}"><button type="button" class="btn btn-secondary">Voltar</button></a>
+        </div>
+    </nav>
     @if($enabledToAdd)
         <div style="background-color:bisque">
-            <form action="{{ route('panel.carousel.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('lw.panel.carousel.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <label for="adicionar">Adicionar Foto ao Carrossel</label>
                 <input type="file" name="carouselAdd">
@@ -19,7 +33,7 @@
         @foreach ($photosLinks as $photo)
 
         {{$photo['name']}}
-            <form action="{{ route('panel.carousel.delete', $photo['name']) }}" method="post">
+            <form action="{{ route('lw.panel.carousel.delete', $photo['name']) }}" method="post">
                 @csrf
                 @method('DELETE')
                 @php

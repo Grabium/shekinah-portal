@@ -2,32 +2,38 @@
 
 namespace App\Livewire\Panel;
 
+use App\Http\Controllers\Panel\Carousel\CarouselPanelController;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class Carousel extends Component
 {
     protected Filesystem $disk;
+    protected array $photosLinks;
+    protected bool $enabledToAdd;
 
     public function __construct()
     {
         $this->disk = Storage::disk('carousel');
     }
 
+    public function mount()
+    {
+        if(!Auth::check()){
+            die('Nâo autenticado');
+        }
+
+        $controller = app(CarouselPanelController::class);
+        [$this->photosLinks, $this->enabledToAdd] = $controller->index();
+    }
+
     public function render()
     {
-        $carouselNames = $this->disk->files();
-        $enabledToAdd = (count($carouselNames) < 12);
-
-        $photosLinks = [];
-        foreach ($carouselNames as $name) {
-            $photosLinks[] = ['link' => 'linkToCarousel/' . $name, 'name' => $name];
-        }
-        
-        return view('livewire.panel.carousel', ['photosLinks' => $photosLinks, 'enabledToAdd' => $enabledToAdd]);
+        return view('livewire.panel.carousel', ['photosLinks' => $this->photosLinks, 'enabledToAdd' => $this->enabledToAdd]);
     }
 
     public function store(Request $request)
