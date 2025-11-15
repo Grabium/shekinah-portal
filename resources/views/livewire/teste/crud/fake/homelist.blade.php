@@ -49,6 +49,7 @@
                         <td>{{$fake->name}}</td>
                         <td>{{$fake->description}}</td>
                         <td><button class="btn btn-sm btn-secondary" type="button" wire:click="toEdit({{$fake->id}})">Editar</button></td>
+                        <td><button class="btn btn-sm btn-danger" type="button" wire:confirm="Tens certeza de que queres DELETAR {{$fake->name}}?" wire:click="toExclude({{$fake->id}})">Excluir</button></td>
                     </tr>
                    
                 @endforeach

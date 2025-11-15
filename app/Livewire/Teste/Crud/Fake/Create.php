@@ -9,6 +9,7 @@ use Livewire\Component;
 class Create extends Component
 {
     public Fake $form;
+    public bool $showNotify = false;
 
     public function render()
     {
@@ -18,8 +19,12 @@ class Create extends Component
     public function store()
     {
         $this->validate(); //realiza as validações de Form\Fake. Acho que usa Reflection.
-        FakeModel::create($this->form->all());
+        $this->showNotify = (FakeModel::create($this->form->all())) ? true : false ;
+    }
 
+    public function redirectTo()
+    {
+        $this->showNotify = false;
         $this->redirectRoute('fake.homelist');
     }
 }

@@ -20,4 +20,10 @@ class Homelist extends Component
     {
         return redirect()->route('fake.edit', ['fake' => $fake]);
     }
+
+    public function toExclude($fake)
+    {
+        $fake = Fake::findOrFail($fake);
+        $fake->delete();
+    }
 }
