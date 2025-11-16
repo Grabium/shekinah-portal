@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Panel\Carousel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Filesystem\LocalFilesystemAdapter;
 
 class CarouselPanelController extends Controller
 {
-    protected Filesystem $disk;
+    protected LocalFilesystemAdapter $disk;
     protected int $limiterMax = 12;
+
 
     public function __construct()
     {
@@ -31,18 +32,18 @@ class CarouselPanelController extends Controller
             $photosLinks[] = ['link' => 'linkToCarousel/' . $name, 'name' => $name];
         }
 
-        return [$photosLinks, $enabledToAdd];//*/
+        return [$photosLinks, $enabledToAdd];
     }
 
 
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    // /**
+    //  * Show the form for creating a new resource.
+    //  */
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -52,40 +53,42 @@ class CarouselPanelController extends Controller
         $carouselNames = $this->disk->files();
         $countCarousels = count($carouselNames);
 
-        if(count($carouselNames) >= 12){
-            return 'Atingida a quantidade máxima';
+
+
+        if(count($carouselNames) >= $this->limiterMax){
+            throw new \Exception('Atingida a quantidade máxima de fotos para o carrossel.');
         }
 
-        $nameNewCarousel = ($countCarousels+1).'jpeg';
-        $photoAddedName = $this->disk->putFileAs('/',$request->file('carouselAdd'), $nameNewCarousel);
+        $nameNewCarousel = ($countCarousels+1).'.jpeg';
+        $this->disk->putFileAs('/',$request->file('carouselAdd'), $nameNewCarousel);
 
         return $this->index();
             
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    // /**
+    //  * Display the specified resource.
+    //  */
+    // public function show(string $id)
+    // {
+    //     //
+    // }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  */
+    // public function edit(string $id)
+    // {
+    //     //
+    // }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    // /**
+    //  * Update the specified resource in storage.
+    //  */
+    // public function update(Request $request, string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -94,15 +97,15 @@ class CarouselPanelController extends Controller
     {
 
         if (!preg_match("/^(([0][1-9])|([1][0-2]))/", $fullName, $match)) {
-            dd('Não validado');
+            throw new \Exception('Não validado');
         } 
 
         if (!$this->disk->exists($fullName)) {
-            dd('imagem não existe!');
+            throw new \Exception('imagem não existe!');
         }
 
         if(!$this->disk->delete($fullName)){
-            dd('Não foi possível deletar '.$fullName);
+            throw new \Exception('Não foi possível deletar '.$fullName);
         }
 
         //reordenar os nomes das fotos que restaram aqui.
@@ -121,5 +124,31 @@ class CarouselPanelController extends Controller
         }
 
         return $this->index();
+    }
+
+    public function move(string $photoName, string $newName):bool
+    {
+        $aux = "aux_file.jpeg";
+        if(!$this->disk->move($newName, $aux)){
+            return false;
+        }
+
+        if(!$this->disk->move($photoName, $newName)){
+            return false;
+        }
+
+        if(!$this->disk->move($aux, $photoName)){
+            return false;
+        }
+        return true;
+    }
+
+    public function download(string $photoName)
+    {
+        if(!$this->disk->exists($photoName)){
+            throw new \Exception('get - '.$photoName. ' - NÃO EXISTE');
+        }
+
+        return $this->disk->download($photoName);
     }
 }

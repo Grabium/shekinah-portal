@@ -2,99 +2,87 @@
 
 namespace App\Livewire\Panel;
 
+use App\Http\Controllers\Panel\Carousel\CarouselDownload;
 use App\Http\Controllers\Panel\Carousel\CarouselPanelController;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 
 class Carousel extends Component
 {
-    protected Filesystem $disk;
     protected array $photosLinks;
     protected bool $enabledToAdd;
+    protected CarouselPanelController $controller;
 
+    //deverá ser apagado
     public function __construct()
     {
-        $this->disk = Storage::disk('carousel');
+        $this->controller = app(CarouselPanelController::class);
     }
 
-    public function mount()
+    public function render()
     {
         if(!Auth::check()){
             die('Nâo autenticado');
         }
 
-        $controller = app(CarouselPanelController::class);
-        [$this->photosLinks, $this->enabledToAdd] = $controller->index();
-    }
+        [$this->photosLinks, $this->enabledToAdd] = $this->controller->index();
 
-    public function render()
-    {
         return view('livewire.panel.carousel', ['photosLinks' => $this->photosLinks, 'enabledToAdd' => $this->enabledToAdd]);
     }
 
     public function store(Request $request)
     {
-        $carouselNames = $this->disk->files();
-        $countCarousels = count($carouselNames);
-
-        if(count($carouselNames) >= 12){
-            return 'Atingida a quantidade máxima';
+        if(!Auth::check()){
+            die('Nâo autenticado');
         }
 
-        $nameNewCarousel = ($countCarousels+1).'.jpeg';
-        $photoAddedName = $this->disk->putFileAs('/',$request->file('carouselAdd'), $nameNewCarousel);
-
-        return $this->render();
-            
+        try {
+            $this->controller->store($request);
+        } catch (\Throwable $th) {
+            return ['msg' => $th->getMessage()];
+        }
+        
+        return redirect()->route('lw.panel.carousel.index');          
     }
 
     public function delete(string $fullName)
     {
-        if (!preg_match("/^(([0][1-9])|([1][0-2]))/", $fullName, $match)) {
-            dd('Não validado');
-        } 
-
-        if (!$this->disk->exists($fullName)) {
-            dd('imagem não existe!');
+        if(!Auth::check()){
+            die('Nâo autenticado');
         }
 
-        if(!$this->disk->delete($fullName)){
-            dd('Não foi possível deletar '.$fullName);
+        try {
+            $this->controller->destroy($fullName);
+        } catch (\Throwable $th) {
+            return ['msg' => $th->getMessage()];
         }
 
-        //reordenar os nomes das fotos que restaram aqui.
-        foreach($this->disk->files() as $key => $name){
-            
-            $num = (string)($key+1);
-            if(preg_match("/^(([0]$num)|($num))[.]jpeg$/", $name, $match)){
-                continue;
-            }
-            
-            $newName = (strlen($num) == 1) ? '0'.$num : $num;
-            $newNameWithExtenssion  = $newName.'.jpeg';
-            if(!$this->disk->move($name, $newNameWithExtenssion)){
-                dd('Erro ao tentar renomear'. $name. ' para ' . $newNameWithExtenssion);
-            }
-        }
-
-        return $this->render();
+        return redirect()->route('lw.panel.carousel.index');
     }
 
     public function download(string $photoName)
-    {
-        if(!$this->disk->exists($photoName)){
-            echo 'get - '.$photoName. ' - NÃO EXISTE';
+    {        
+        if(!Auth::check()){
+            die('Nâo autenticado');
+        }
+
+        try {
+            return ($this->controller->download($photoName));
+        } catch (\Throwable $th) {
+            return ['msg' => $th->getMessage()];
         }
         
-        return $this->disk->download($photoName);//Há um problema com a extenssão INTELEPHENSE aqui. Ignore esse bug.
+        $this->mount();
+        
     }
 
     public function move(string $photoName, string $sense)
     {
+        if(!Auth::check()){
+            die('Nâo autenticado');
+        }
+
         preg_match("/^((0[1-9])|(1[0-2]))/", $photoName, $match);
         $photoId = (int)$match[0];
 
@@ -103,11 +91,10 @@ class Carousel extends Component
         $newName = (strlen($newName) == 1) ? '0'.$newName : $newName;
         $newName .= '.jpeg';
 
-        $aux = "aux_file.jpeg";
-        $this->disk->move($newName, $aux);
-        $this->disk->move($photoName, $newName);
-        $this->disk->move($aux, $photoName);
+        if(!$this->controller->move($photoName, $newName)){
+            return 'Não foi possível alterar a ordem da foto no carrossel.';
+        }
 
-        to_route('panel.carousel.index');
+        to_route('lw.panel.carousel.index');
     }
 }

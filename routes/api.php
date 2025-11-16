@@ -10,7 +10,7 @@ Route::get('/user', function (Request $request) {
 
 
 //Rotas para disponibilização futura de uma API.
-//Painel de controle
-Route::middleware('auth')->group(function() {
-    Route::get('/ctrl/panel/carousel/index', [CarouselPanelController::class, 'index'])->name('api.ctrl.panel.carousel.index');
-});
+// //Painel de controle SEGUE O MODELO ABAIXO
+// Route::middleware('auth')->group(function() {
+//     Route::get('/ctrl/panel/carousel/index', [CarouselPanelController::class, 'index'])->name('api.ctrl.panel.carousel.index');
+// });
