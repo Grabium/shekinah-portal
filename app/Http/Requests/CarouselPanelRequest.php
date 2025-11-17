@@ -22,7 +22,7 @@ class CarouselPanelRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "carouselAdd" => "mimetypes:image/bmp,image/png,image/jpeg"
+            "carouselAdd" => "mimetypes:image/bmp,image/png"//,image/jpeg"
         ];
     }
 }
