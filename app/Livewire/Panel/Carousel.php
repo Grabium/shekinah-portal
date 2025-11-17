@@ -2,10 +2,9 @@
 
 namespace App\Livewire\Panel;
 
-use App\Http\Controllers\Panel\Carousel\CarouselDownload;
 use App\Http\Controllers\Panel\Carousel\CarouselPanelController;
 use Livewire\Component;
-use Illuminate\Http\Request;
+use App\Http\Requests\CarouselPanelRequest;
 use Illuminate\Support\Facades\Auth;
 
 class Carousel extends Component
@@ -14,7 +13,6 @@ class Carousel extends Component
     protected bool $enabledToAdd;
     protected CarouselPanelController $controller;
 
-    //deverá ser apagado
     public function __construct()
     {
         $this->controller = app(CarouselPanelController::class);
@@ -31,7 +29,7 @@ class Carousel extends Component
         return view('livewire.panel.carousel', ['photosLinks' => $this->photosLinks, 'enabledToAdd' => $this->enabledToAdd]);
     }
 
-    public function store(Request $request)
+    public function store(CarouselPanelRequest $request)
     {
         if(!Auth::check()){
             die('Nâo autenticado');
@@ -97,4 +95,8 @@ class Carousel extends Component
 
         to_route('lw.panel.carousel.index');
     }
+
+    //Gerar Form com validações/Regras:
+    //'photo' => 'mimes:jpg,bmp,png'
+    //https://laravel.com/docs/12.x/validation#rule-mimetypes
 }

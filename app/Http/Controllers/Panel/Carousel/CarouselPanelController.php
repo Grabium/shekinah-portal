@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Panel\Carousel;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\CarouselPanelRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\LocalFilesystemAdapter;
 
@@ -17,7 +17,6 @@ class CarouselPanelController extends Controller
     {
         $this->disk = Storage::disk('carousel');
     }
-
 
     /**
      * Display a listing of the resource.
@@ -35,21 +34,12 @@ class CarouselPanelController extends Controller
         return [$photosLinks, $enabledToAdd];
     }
 
-
-
-    // /**
-    //  * Show the form for creating a new resource.
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CarouselPanelRequest $request)
     {
+        dd($request->all());
         $carouselNames = $this->disk->files();
         $countCarousels = count($carouselNames);
 
@@ -65,30 +55,6 @@ class CarouselPanelController extends Controller
         return $this->index();
             
     }
-
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // public function show(string $id)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
-    // public function edit(string $id)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, string $id)
-    // {
-    //     //
-    // }
 
     /**
      * Remove the specified resource from storage.

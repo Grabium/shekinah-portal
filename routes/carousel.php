@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Panel\Carousel\CarouselPanelController;
-use App\Http\Controllers\ProfileController;
 use App\Livewire\Panel\Carousel;
 use Illuminate\Support\Facades\Route;
 
